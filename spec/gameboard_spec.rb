@@ -1,5 +1,6 @@
 require 'main'
 
+# rubocop:disable Metrics/BlockLength
 describe GameBoard do
   subject(:gameboard) { described_class.new }
 
@@ -23,11 +24,47 @@ describe GameBoard do
         expect(result).to be true
       end
 
-      it 'all elements has 6 elements' do
+      it 'all elements has 6 elements of their own' do
         result = board.all? do |element|
           element.length == 6
         end
         expect(result).to be true
+      end
+    end
+
+    context 'when initializing @player_one' do
+      subject(:player_one) { gameboard.instance_variable_get(:@player_one) }
+
+      it 'belongs to Player class' do
+        expect(player_one).to be_a(Player)
+      end
+
+      it 'has name' do
+        name = player_one.name
+        expect(name).to be_truthy
+      end
+
+      it 'has chip' do
+        chip = player_one.chip
+        expect(chip).to be_truthy
+      end
+    end
+
+    context 'when initizalizing @player_two' do
+      subject(:player_two) { gameboard.instance_variable_get(:@player_two) }
+
+      it 'belongs to Player class' do
+        expect(player_two).to be_a(Player)
+      end
+
+      it 'has name' do
+        name = player_two.name
+        expect(name).to be_truthy
+      end
+
+      it 'has chip' do
+        chip = player_two.chip
+        expect(chip).to be_truthy
       end
     end
   end
