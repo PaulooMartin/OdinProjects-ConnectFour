@@ -68,4 +68,67 @@ describe GameBoard do
       end
     end
   end
+
+  describe '#prompt_player' do
+    subject(:player_one) { gameboard.instance_variable_get(:@player_one) }
+
+    context 'when prompting player' do
+      before do
+        allow(gameboard).to receive(:print)
+        allow(gameboard).to receive(:gets).and_return('4')
+      end
+
+      it 'sends the prompt message' do
+        message = "#{player_one.name}'s turn. Choose a column number to place your chip #{player_one.chip}  -> "
+        expect(gameboard).to receive(:print).with(message)
+        gameboard.prompt_player(player_one)
+      end
+
+      it 'asks the player for a column number' do
+        expect(gameboard).to receive(:gets)
+        gameboard.prompt_player(player_one)
+      end
+
+      it 'returns a number' do
+        result = gameboard.prompt_player(player_one)
+        expect(result).to be_a(Numeric)
+      end
+    end
+
+    context 'when player gives an invalid placement once then gives a valid one' do
+      before do
+        allow(gameboard).to receive(:print)
+        allow(gameboard).to receive(:gets).and_return('%', '5')
+      end
+
+      it 'asks the player for a column number twice' do
+        expect(gameboard).to receive(:gets).twice
+        gameboard.prompt_player(player_one)
+      end
+
+      it 'sends the prompt message twice' do
+        message = "#{player_one.name}'s turn. Choose a column number to place your chip #{player_one.chip}  -> "
+        expect(gameboard).to receive(:print).with(message).twice
+        gameboard.prompt_player(player_one)
+      end
+    end
+
+    context 'when player gives an invalid placement 5 times then gives a valid one' do
+      before do
+        allow(gameboard).to receive(:print)
+        letter = 'a'
+        two_digit = '12'
+        symbol = '$'
+        wrong_number = '7'
+        wrong_number_second = '9'
+        valid = '5'
+        allow(gameboard).to receive(:gets).and_return(letter, two_digit, wrong_number, symbol, wrong_number_second, valid)
+      end
+
+      it 'asks the player for a column number 6 times' do
+        expect(gameboard).to receive(:gets).exactly(6).times
+        gameboard.prompt_player(player_one)
+      end
+    end
+  end
 end
