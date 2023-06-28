@@ -31,6 +31,18 @@ class GameBoard
   def switch_current_player
     @current_player = @current_player == @player_one ? @player_two : @player_one
   end
+
+  def check_rows_for_winner
+    chip = @current_player.chip
+    @board.any? do |row|
+      case row
+      in [*, ^chip, ^chip, ^chip, ^chip, *]
+        true
+      else
+        false
+      end
+    end
+  end
 end
 
 class Player

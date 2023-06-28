@@ -177,4 +177,50 @@ describe GameBoard do
       expect { gameboard.switch_current_player }.to change { gameboard.instance_variable_get(:@current_player) }.from(player_one).to(player_two)
     end
   end
+
+  describe '#check_rows_for_winner' do
+    subject(:tiles) { gameboard.instance_variable_get(:@board) }
+    subject(:current_player) { gameboard.instance_variable_get(:@current_player) }
+
+    context 'when all rows is not populated' do
+      it 'returns false' do
+        result = gameboard.check_rows_for_winner
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when any row is populated' do
+      context 'when any 4-line in a row contains blank' do
+        it 'returns false' do
+          result = gameboard.check_rows_for_winner
+          expect(result).to be(false)
+        end
+      end
+
+      context 'when any 4-line in a row contains chip belonging only to a single player' do
+        before do
+          4.times { |column| gameboard.place_chip(current_player, column) }
+        end
+
+        it 'returns true' do
+          result = gameboard.check_rows_for_winner
+          expect(result).to be(true)
+        end
+      end
+
+      context 'when any 4-line in a row contains chip belonging to both players' do
+        before do
+          4.times do |column|
+            gameboard.place_chip(gameboard.instance_variable_get(:@current_player), column)
+            gameboard.switch_current_player
+          end
+        end
+
+        it 'returns false' do
+          result = gameboard.check_rows_for_winner
+          expect(result).to be(false)
+        end
+      end
+    end
+  end
 end
