@@ -3,6 +3,7 @@ class GameBoard
     @board = Array.new(7) { Array.new(6, '-') }
     @player_one = Player.new('Player one', "\u26F4")
     @player_two = Player.new('Player two', "\u26DF")
+    @current_player = @player_one
   end
 
   def prompt_player(player)
@@ -25,6 +26,10 @@ class GameBoard
       break
     end
     placed
+  end
+
+  def switch_current_player
+    @current_player = @current_player == @player_one ? @player_two : @player_one
   end
 end
 

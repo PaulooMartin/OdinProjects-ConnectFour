@@ -67,6 +67,15 @@ describe GameBoard do
         expect(chip).to be_truthy
       end
     end
+
+    context 'when initializing @current_player' do
+      subject(:player_one) { gameboard.instance_variable_get(:@player_one) }
+      subject(:current_player) { gameboard.instance_variable_get(:@current_player) }
+
+      it 'is equivalent to @player_one' do
+        expect(current_player).to be(player_one)
+      end
+    end
   end
 
   describe '#prompt_player' do
@@ -157,6 +166,15 @@ describe GameBoard do
         result = gameboard.place_chip(player, column)
         expect(result).to be_nil
       end
+    end
+  end
+
+  describe '#switch_current_player' do
+    subject(:player_one) { gameboard.instance_variable_get(:@player_one) }
+    subject(:player_two) { gameboard.instance_variable_get(:@player_two) }
+
+    it 'switches @current_player' do
+      expect { gameboard.switch_current_player }.to change { gameboard.instance_variable_get(:@current_player) }.from(player_one).to(player_two)
     end
   end
 end
