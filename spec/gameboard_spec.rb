@@ -131,4 +131,32 @@ describe GameBoard do
       end
     end
   end
+
+  describe '#place_chip' do
+    subject(:tiles) { gameboard.instance_variable_get(:@board) }
+
+    context 'when placing chip' do
+      it 'places the chip on the board' do
+        column = 5
+        player = gameboard.instance_variable_get(:@player_one)
+        expect { gameboard.place_chip(player, column) }.to change { tiles[0][5] }.to(player.chip)
+      end
+
+      it 'places the chip on the next row if a chip is present' do
+        column = 5
+        player = gameboard.instance_variable_get(:@player_one)
+        gameboard.place_chip(player, column)
+        expect { gameboard.place_chip(player, column) }.to change { tiles[1][5] }.to(player.chip)
+      end
+
+      it 'returns nil if chip was not placed' do
+        column = 5
+        player = gameboard.instance_variable_get(:@player_one)
+        total_rows = tiles.length
+        total_rows.times { gameboard.place_chip(player, column) }
+        result = gameboard.place_chip(player, column)
+        expect(result).to be_nil
+      end
+    end
+  end
 end

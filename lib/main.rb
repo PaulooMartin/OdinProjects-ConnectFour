@@ -14,6 +14,18 @@ class GameBoard
     end
     column_number.to_i
   end
+
+  def place_chip(player, column)
+    placed = nil
+    @board.each do |row|
+      next unless row[column] == '-'
+
+      row[column] = player.chip
+      placed = true
+      break
+    end
+    placed
+  end
 end
 
 class Player
