@@ -12,9 +12,9 @@ describe GameBoard do
         expect(board).to be_an Array
       end
 
-      it 'is has 7 elements' do
+      it 'is has 6 elements' do
         length = board.length
-        expect(length).to eq(7)
+        expect(length).to eq(6)
       end
 
       it 'all elements are of type Array' do
@@ -24,9 +24,9 @@ describe GameBoard do
         expect(result).to be true
       end
 
-      it 'all elements has 6 elements of their own' do
+      it 'all elements has 7 elements of their own' do
         result = board.all? do |element|
-          element.length == 6
+          element.length == 7
         end
         expect(result).to be true
       end

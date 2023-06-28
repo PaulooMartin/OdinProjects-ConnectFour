@@ -1,6 +1,6 @@
 class GameBoard
   def initialize
-    @board = Array.new(7) { Array.new(6, '-') }
+    @board = Array.new(6) { Array.new(7, '-') }
     @player_one = Player.new('Player one', "\u26F4")
     @player_two = Player.new('Player two', "\u26DF")
     @current_player = @player_one
@@ -9,7 +9,7 @@ class GameBoard
   def prompt_player(player)
     prompt_message = "#{player.name}'s turn. Choose a column number to place your chip #{player.chip}  -> "
     column_number = ''
-    until column_number.match?(/\A[0-6]\z/)
+    until column_number.match?(/\A[0-5]\z/)
       print prompt_message
       column_number = gets.chomp
     end
