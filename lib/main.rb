@@ -58,6 +58,16 @@ class GameBoard
     end
     result
   end
+
+  def find_row_of_highest_chip(column)
+    row_number = 5
+    current_tile_chip = @board[row_number][column]
+    until !current_tile_chip.include?('-') || row_number < 0
+      row_number -= 1
+      current_tile_chip = @board[row_number][column]
+    end
+    row_number
+  end
 end
 
 class Player

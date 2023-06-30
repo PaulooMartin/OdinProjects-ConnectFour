@@ -272,4 +272,44 @@ describe GameBoard do
       end
     end
   end
+
+  describe '#find_row_of_highest_chip' do
+    subject(:tiles) { gameboard.instance_variable_get(:@board) }
+    subject(:current_player) { gameboard.instance_variable_get(:@current_player) }
+
+    context 'when passed in the column of last placed chip' do
+      it 'returns the row number' do
+        column = 0
+        gameboard.place_chip(current_player, column)
+        row_number = gameboard.find_row_of_highest_chip(column)
+        expect(row_number).to eq(0)
+      end
+
+      it 'returns the row number' do
+        column = 0
+        gameboard.place_chip(current_player, column)
+        gameboard.place_chip(current_player, column)
+        row_number = gameboard.find_row_of_highest_chip(column)
+        expect(row_number).to eq(1)
+      end
+    end
+
+    context 'when column is not yet occupied' do
+      it 'returns -1' do
+        column = 0
+        result = gameboard.find_row_of_highest_chip(column)
+        expect(result).to eq(-1)
+      end
+    end
+
+    context 'when chip is floating in mid-air' do
+      it 'returns the row number' do
+        column = 4
+        row = 4
+        tiles[row][column] = current_player.chip
+        row_number = gameboard.find_row_of_highest_chip(column)
+        expect(row_number).to eq(4)
+      end
+    end
+  end
 end
