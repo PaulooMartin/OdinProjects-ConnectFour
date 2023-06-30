@@ -43,6 +43,21 @@ class GameBoard
       end
     end
   end
+
+  def check_columns_for_winner
+    chip = @current_player.chip
+    result = false
+    @board.each_with_index do |row, r_index|
+      next if r_index < 3
+      row.each_with_index do |column_chip, c_index|
+        four_line = [column_chip, @board[r_index-1][c_index], @board[r_index-2][c_index], @board[r_index-3][c_index]]
+        result = four_line.all? { |sample| sample.include?(chip)}
+        break if result
+      end
+      break if result
+    end
+    result
+  end
 end
 
 class Player

@@ -131,7 +131,8 @@ describe GameBoard do
         wrong_number = '7'
         wrong_number_second = '9'
         valid = '5'
-        allow(gameboard).to receive(:gets).and_return(letter, two_digit, wrong_number, symbol, wrong_number_second, valid)
+        allow(gameboard).to receive(:gets).and_return(letter, two_digit, wrong_number, symbol, wrong_number_second,
+                                                      valid)
       end
 
       it 'asks the player for a column number 6 times' do
@@ -174,7 +175,9 @@ describe GameBoard do
     subject(:player_two) { gameboard.instance_variable_get(:@player_two) }
 
     it 'switches @current_player' do
-      expect { gameboard.switch_current_player }.to change { gameboard.instance_variable_get(:@current_player) }.from(player_one).to(player_two)
+      expect { gameboard.switch_current_player }.to change {
+                                                      gameboard.instance_variable_get(:@current_player)
+                                                    }.from(player_one).to(player_two)
     end
   end
 
@@ -212,6 +215,52 @@ describe GameBoard do
         before do
           4.times do |column|
             gameboard.place_chip(gameboard.instance_variable_get(:@current_player), column)
+            gameboard.switch_current_player
+          end
+        end
+
+        it 'returns false' do
+          result = gameboard.check_rows_for_winner
+          expect(result).to be(false)
+        end
+      end
+    end
+  end
+
+  describe '#check_columns_for_winner' do
+    subject(:tiles) { gameboard.instance_variable_get(:@board) }
+    subject(:current_player) { gameboard.instance_variable_get(:@current_player) }
+
+    context 'when all columns is not populated' do
+      it 'returns false' do
+        result = gameboard.check_columns_for_winner
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when any column is populated' do
+      context 'when any 4-line in a column contains blank' do
+        it 'returns false' do
+          result = gameboard.check_columns_for_winner
+          expect(result).to be(false)
+        end
+      end
+
+      context 'when any 4-line in a column contains chip belonging only to a single player' do
+        before do
+          4.times { |_column| gameboard.place_chip(current_player, 0) }
+        end
+
+        it 'returns true' do
+          result = gameboard.check_columns_for_winner
+          expect(result).to be(true)
+        end
+      end
+
+      context 'when any 4-line in a column contains chip belonging to both players' do
+        before do
+          4.times do |_column|
+            gameboard.place_chip(gameboard.instance_variable_get(:@current_player), 0)
             gameboard.switch_current_player
           end
         end
