@@ -120,6 +120,17 @@ class GameBoard
     [diagonal_a + 1, diagonal_b + 1].any? { |sum| sum == 4 }
   end
 
+  def print_board
+    puts '___ConnectFour___'
+    @board.each do |row|
+      print '| '
+      row.each do |tile|
+        print "#{tile} "
+      end
+      print "|\n"
+    end
+  end
+
   private
 
   def get_upper_right_chip(row, column)
