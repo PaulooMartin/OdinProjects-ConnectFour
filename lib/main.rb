@@ -113,6 +113,13 @@ class GameBoard
     count
   end
 
+  def check_diagonal_if_winner(last_column)
+    last_row = find_row_of_highest_chip(last_column)
+    diagonal_a = calculate_similar_upper_right(last_row, last_column) + calculate_similar_lower_left(last_row, last_column)
+    diagonal_b = calculate_similar_upper_left(last_row, last_column) + calculate_similar_lower_right(last_row, last_column)
+    [diagonal_a + 1, diagonal_b + 1].any? { |sum| sum == 4 }
+  end
+
   private
 
   def get_upper_right_chip(row, column)

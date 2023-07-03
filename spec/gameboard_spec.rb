@@ -452,4 +452,72 @@ describe GameBoard do
       end
     end
   end
+
+  describe '#check_diagonal_if_winner' do
+    subject(:tiles) { gameboard.instance_variable_get(:@board) }
+    subject(:player_one) { gameboard.instance_variable_get(:@player_one) }
+    subject(:player_two) { gameboard.instance_variable_get(:@player_two) }
+
+    context 'when checking the recently placed chip' do
+      context 'when it does not form a 4-line' do
+        before do
+          tiles[0][0] = player_one.chip
+          tiles[1][1] = player_one.chip
+          tiles[2][2] = player_one.chip
+        end
+
+        it 'returns false' do
+          last_placed_column = 2
+          result = gameboard.check_diagonal_if_winner(last_placed_column)
+          expect(result).to be(false)
+        end
+      end
+
+      context 'when it forms a 4-line' do
+        context 'when all chips in 4-line belongs to a single player' do
+          it 'returns true' do
+            tiles[0][0] = player_one.chip
+            tiles[1][1] = player_one.chip
+            tiles[2][2] = player_one.chip
+            tiles[3][3] = player_one.chip
+            last_placed_column = 3
+            result = gameboard.check_diagonal_if_winner(last_placed_column)
+            expect(result).to be(true)
+          end
+
+          it 'returns true' do
+            tiles[0][0] = player_one.chip
+            tiles[3][3] = player_one.chip
+            tiles[2][2] = player_one.chip
+            tiles[1][1] = player_one.chip
+            last_placed_column = 1
+            result = gameboard.check_diagonal_if_winner(last_placed_column)
+            expect(result).to be(true)
+          end
+        end
+
+        context 'when chips belongs to both players' do
+          it 'returns false' do
+            tiles[0][0] = player_two.chip
+            tiles[1][1] = player_one.chip
+            tiles[2][2] = player_one.chip
+            tiles[3][3] = player_one.chip
+            last_placed_column = 3
+            result = gameboard.check_diagonal_if_winner(last_placed_column)
+            expect(result).to be(false)
+          end
+
+          it 'returns false' do
+            tiles[0][0] = player_one.chip
+            tiles[3][3] = player_one.chip
+            tiles[2][2] = player_two.chip
+            tiles[1][1] = player_one.chip
+            last_placed_column = 1
+            result = gameboard.check_diagonal_if_winner(last_placed_column)
+            expect(result).to be(false)
+          end
+        end
+      end
+    end
+  end
 end
