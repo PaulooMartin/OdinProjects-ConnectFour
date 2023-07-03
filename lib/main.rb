@@ -1,3 +1,5 @@
+require 'io/console'
+
 class GameBoard
   def initialize
     @board = Array.new(6) { Array.new(7, '-') }
@@ -6,10 +8,28 @@ class GameBoard
     @current_player = @player_one
   end
 
+  def play_connect_four
+    is_win = false
+    round = 1
+    print_board
+    until is_win || round > 42
+      column_number = prompt_player(@current_player)
+      result = place_chip(@current_player, column_number)
+      if result
+        is_win = check_winner(column_number) if round > 6
+        switch_current_player unless is_win
+        round += 1
+      end
+      $stdout.clear_screen
+      print_board
+    end
+    print_end_message(is_win)
+  end
+
   def prompt_player(player)
     prompt_message = "#{player.name}'s turn. Choose a column number to place your chip #{player.chip}  -> "
     column_number = ''
-    until column_number.match?(/\A[0-5]\z/)
+    until column_number.match?(/\A[0-6]\z/)
       print prompt_message
       column_number = gets.chomp
     end
@@ -30,6 +50,14 @@ class GameBoard
 
   def switch_current_player
     @current_player = @current_player == @player_one ? @player_two : @player_one
+  end
+
+  def check_winner(last_placed_column)
+    return true if check_rows_for_winner
+
+    return true if check_columns_for_winner
+
+    return true if check_diagonal_if_winner(last_placed_column)
   end
 
   def check_rows_for_winner
@@ -121,13 +149,23 @@ class GameBoard
   end
 
   def print_board
-    puts '___ConnectFour___'
-    @board.each do |row|
-      print '| '
+    puts '____ConnectFour____'
+    @board.reverse.each do |row|
+      print '|  '
       row.each do |tile|
         print "#{tile} "
       end
-      print "|\n"
+      print " |\n"
+    end
+    puts '   0 1 2 3 4 5 6  '
+    puts '  (Column Number) '
+  end
+
+  def print_end_message(result)
+    if result
+      puts "Congratulations #{@current_player.name}! You won."
+    else
+      puts 'Nobody won :/'
     end
   end
 
@@ -174,3 +212,6 @@ class Player
     @chip = chip
   end
 end
+
+gameboard = GameBoard.new
+gameboard.play_connect_four
