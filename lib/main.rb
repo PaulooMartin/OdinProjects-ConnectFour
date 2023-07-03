@@ -68,6 +68,84 @@ class GameBoard
     end
     row_number
   end
+
+  def calculate_similar_upper_right(row, column)
+    reference_chip = @board[row][column]
+    count = 0
+    upper_right = get_upper_right_chip(row + count, column + count)
+    while upper_right == reference_chip
+      count += 1
+      upper_right = get_upper_right_chip(row + count, column + count)
+    end
+    count
+  end
+
+  def calculate_similar_lower_left(row, column)
+    reference_chip = @board[row][column]
+    count = 0
+    lower_left = get_lower_left_chip(row - count, column - count)
+    while lower_left == reference_chip
+      count += 1
+      lower_left = get_lower_left_chip(row - count, column - count)
+    end
+    count
+  end
+
+  def calculate_similar_upper_left(row, column)
+    reference_chip = @board[row][column]
+    count = 0
+    upper_left = get_upper_left_chip(row + count, column - count)
+    while upper_left == reference_chip
+      count += 1
+      upper_left = get_upper_left_chip(row + count, column - count)
+    end
+    count
+  end
+
+  def calculate_similar_lower_right(row, column)
+    reference_chip = @board[row][column]
+    count = 0
+    upper_left = get_lower_right_chip(row - count, column + count)
+    while upper_left == reference_chip
+      count += 1
+      upper_left = get_lower_right_chip(row - count, column + count)
+    end
+    count
+  end
+
+  private
+
+  def get_upper_right_chip(row, column)
+    upper_right_row = row + 1
+    upper_right_column = column + 1
+    return '-' if upper_right_row > 5 || upper_right_column > 6
+
+    @board[upper_right_row][upper_right_column]
+  end
+
+  def get_lower_left_chip(row, column)
+    lower_left_row = row - 1
+    lower_left_column = column - 1
+    return '-' if lower_left_row.negative? || lower_left_column.negative?
+
+    @board[lower_left_row][lower_left_column]
+  end
+
+  def get_upper_left_chip(row, column)
+    upper_left_row = row + 1
+    upper_left_column = column - 1
+    return '-' if upper_left_row > 5 || upper_left_column.negative?
+
+    @board[upper_left_row][upper_left_column]
+  end
+
+  def get_lower_right_chip(row, column)
+    lower_right_row = row - 1
+    lower_right_column = column + 1
+    return '-' if lower_right_row.negative? || lower_right_column > 6
+
+    @board[lower_right_row][lower_right_column]
+  end
 end
 
 class Player

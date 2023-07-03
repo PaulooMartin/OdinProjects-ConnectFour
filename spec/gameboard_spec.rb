@@ -312,4 +312,144 @@ describe GameBoard do
       end
     end
   end
+
+  describe '#calculate_similar_upper_right' do
+    subject(:tiles) { gameboard.instance_variable_get(:@board) }
+    subject(:current_player) { gameboard.instance_variable_get(:@current_player) }
+
+    context 'when getting how many similar chips are on the upper right direction' do
+      before do
+        tiles[0][0] = current_player.chip
+        tiles[1][1] = current_player.chip
+        tiles[2][2] = current_player.chip
+        tiles[3][3] = current_player.chip
+      end
+
+      it 'returns a number' do
+        row = 0
+        column = 0
+        result = gameboard.calculate_similar_upper_right(row, column)
+        expect(result).to be_an(Integer)
+      end
+
+      it 'returns the number of similar chips on said direction' do
+        row = 0
+        column = 0
+        result = gameboard.calculate_similar_upper_right(row, column)
+        expect(result).to eq(3)
+      end
+
+      it 'returns the number of similar chips on said direction' do
+        row = 1
+        column = 1
+        result = gameboard.calculate_similar_upper_right(row, column)
+        expect(result).to eq(2)
+      end
+    end
+  end
+
+  describe '#calculate_similar_lower_left' do
+    subject(:tiles) { gameboard.instance_variable_get(:@board) }
+    subject(:current_player) { gameboard.instance_variable_get(:@current_player) }
+
+    context 'when getting how many similar chips are on the lower left direction' do
+      before do
+        tiles[0][0] = current_player.chip
+        tiles[1][1] = current_player.chip
+        tiles[2][2] = current_player.chip
+        tiles[3][3] = current_player.chip
+      end
+
+      it 'returns a number' do
+        row = 0
+        column = 0
+        result = gameboard.calculate_similar_lower_left(row, column)
+        expect(result).to be_an(Integer)
+      end
+
+      it 'returns the number of similar chips on said direction' do
+        row = 3
+        column = 3
+        result = gameboard.calculate_similar_lower_left(row, column)
+        expect(result).to eq(3)
+      end
+
+      it 'returns the number of similar chips on said direction' do
+        row = 2
+        column = 2
+        result = gameboard.calculate_similar_lower_left(row, column)
+        expect(result).to eq(2)
+      end
+    end
+  end
+
+  describe '#calculate_similar_upper_left' do
+    subject(:tiles) { gameboard.instance_variable_get(:@board) }
+    subject(:current_player) { gameboard.instance_variable_get(:@current_player) }
+
+    context 'when getting how many similar chips are on the upper left direction' do
+      before do
+        tiles[0][6] = current_player.chip
+        tiles[1][5] = current_player.chip
+        tiles[2][4] = current_player.chip
+        tiles[3][3] = current_player.chip
+      end
+
+      it 'returns a number' do
+        row = 0
+        column = 6
+        result = gameboard.calculate_similar_upper_left(row, column)
+        expect(result).to be_an(Integer)
+      end
+
+      it 'returns the number of similar chips on said direction' do
+        row = 0
+        column = 6
+        result = gameboard.calculate_similar_upper_left(row, column)
+        expect(result).to eq(3)
+      end
+
+      it 'returns the number of similar chips on said direction' do
+        row = 1
+        column = 5
+        result = gameboard.calculate_similar_upper_left(row, column)
+        expect(result).to eq(2)
+      end
+    end
+  end
+
+  describe '#calculate_similar_lower_right' do
+    subject(:tiles) { gameboard.instance_variable_get(:@board) }
+    subject(:current_player) { gameboard.instance_variable_get(:@current_player) }
+
+    context 'when getting how many similar chips are on the lower right direction' do
+      before do
+        tiles[0][6] = current_player.chip
+        tiles[1][5] = current_player.chip
+        tiles[2][4] = current_player.chip
+        tiles[3][3] = current_player.chip
+      end
+
+      it 'returns a number' do
+        row = 0
+        column = 6
+        result = gameboard.calculate_similar_lower_right(row, column)
+        expect(result).to be_an(Integer)
+      end
+
+      it 'returns the number of similar chips on said direction' do
+        row = 3
+        column = 3
+        result = gameboard.calculate_similar_lower_right(row, column)
+        expect(result).to eq(3)
+      end
+
+      it 'returns the number of similar chips on said direction' do
+        row = 2
+        column = 4
+        result = gameboard.calculate_similar_lower_right(row, column)
+        expect(result).to eq(2)
+      end
+    end
+  end
 end
